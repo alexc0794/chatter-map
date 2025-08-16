@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-import { geocoding, Map } from "@maptiler/sdk";
+import { geocoding, Map, MapStyle } from "@maptiler/sdk";
 
 export default function Chat() {
   useEffect(() => {
@@ -14,6 +14,7 @@ export default function Chat() {
     const map = new Map({
       container: mapContainer,
       apiKey: process.env.NEXT_PUBLIC_MAPTILER_API_KEY ?? "",
+      style: MapStyle.BASIC,
     });
 
     map.on("click", async function (e) {
@@ -83,11 +84,10 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
+    <div className="flex h-screen">
       <div
         id="my-container-div"
         style={{
-          zIndex: -1000,
           position: "absolute",
           top: 0,
           left: 0,
@@ -95,25 +95,30 @@ export default function Chat() {
           bottom: 0,
         }}
       />
-      {messages.map((m) => (
-        <div
-          key={m.id}
-          className="whitespace-pre-wrap mb-4 p-3 rounded-lg bg-gray-100"
-        >
-          <strong>{m.role === "user" ? "User: " : "AI: "}</strong>
-          {m.content}
-        </div>
-      ))}
+      <div
+        className="flex flex-col w-110 py-4 px-4 bg-opacity-20 backdrop-blur-md"
+        style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
+      >
+        {messages.map((m) => (
+          <div
+            key={m.id}
+            className="whitespace-pre-wrap mb-4 p-3 rounded-lg bg-gray-100"
+          >
+            <strong>{m.role === "user" ? "User: " : "AI: "}</strong>
+            {m.content}
+          </div>
+        ))}
 
-      <form onSubmit={handleSubmit}>
-        <input
-          className="fixed bottom-0 w-full max-w-md p-2 mb-8 border border-gray-300 rounded shadow-xl"
-          value={input}
-          placeholder="Say something..."
-          onChange={(e) => setInput(e.target.value)}
-          disabled={isLoading}
-        />
-      </form>
+        <form onSubmit={handleSubmit} className="mt-auto">
+          <input
+            className="w-full p-2 border border-gray-300 rounded shadow-xl"
+            value={input}
+            placeholder="Say something..."
+            onChange={(e) => setInput(e.target.value)}
+            disabled={isLoading}
+          />
+        </form>
+      </div>
     </div>
   );
 }
