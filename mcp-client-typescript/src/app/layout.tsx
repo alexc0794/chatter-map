@@ -1,4 +1,5 @@
 import "./globals.css";
+import "@maptiler/sdk/dist/maptiler-sdk.css";
 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";

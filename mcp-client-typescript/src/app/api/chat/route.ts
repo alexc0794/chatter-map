@@ -13,11 +13,8 @@ export async function POST(req: NextRequest) {
       type: "sse",
       url: "http://localhost:8000/sse", // ElevenLabs
     },
-    // model: anthropic('claude-sonnet-4-20250514'),
-    // messages: convertToCoreMessages(messages),
   });
   const elevenLabsTools = await client.tools();
-  console.log(elevenLabsTools);
 
   const response = await generateText({
     model: anthropic("claude-sonnet-4-20250514"),
